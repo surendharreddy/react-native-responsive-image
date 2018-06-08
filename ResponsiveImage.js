@@ -1,27 +1,23 @@
-'use strict';
+"use strict";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import cloneReferencedElement from 'react-clone-referenced-element';
-import {
-  Image,
-  PixelRatio,
-} from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import cloneReferencedElement from "react-clone-referenced-element";
+import { ImageBackground, PixelRatio } from "react-native";
 
 export default class ResponsiveImage extends React.Component {
-
-  static propTypes = {
-    ...Image.propTypes,
-    source: PropTypes.shape({
-      uri: PropTypes.string,
-    }),
-    sources: PropTypes.objectOf(Image.propTypes.source),
-    preferredPixelRatio: PropTypes.number,
-    renderImageElement: PropTypes.func,
-  };
+  // static propTypes = {
+  //   ...Image.propTypes,
+  //   source: PropTypes.shape({
+  //     uri: PropTypes.string
+  //   }),
+  //   sources: PropTypes.objectOf(Image.propTypes.source),
+  //   preferredPixelRatio: PropTypes.number,
+  //   renderImageElement: PropTypes.func
+  // };
 
   static defaultProps = {
-    preferredPixelRatio: PixelRatio.get(),
+    preferredPixelRatio: PixelRatio.get()
   };
 
   static getClosestHighQualitySource(sources, preferredPixelRatio) {
@@ -30,8 +26,8 @@ export default class ResponsiveImage extends React.Component {
       return null;
     }
 
-    pixelRatios.sort((ratioA, ratioB) =>
-      parseFloat(ratioA) - parseFloat(ratioB)
+    pixelRatios.sort(
+      (ratioA, ratioB) => parseFloat(ratioA) - parseFloat(ratioB)
     );
     for (let ii = 0; ii < pixelRatios.length; ii++) {
       if (pixelRatios[ii] >= preferredPixelRatio) {
@@ -57,7 +53,7 @@ export default class ResponsiveImage extends React.Component {
     } = this.props;
     let optimalSource = ResponsiveImage.getClosestHighQualitySource(
       sources,
-      preferredPixelRatio,
+      preferredPixelRatio
     );
     if (optimalSource) {
       source = optimalSource;
@@ -68,14 +64,18 @@ export default class ResponsiveImage extends React.Component {
     if (renderImageElement) {
       let image = renderImageElement({ ...props, source });
       return cloneReferencedElement(image, {
-        ref: component => { this._image = component; },
+        ref: component => {
+          this._image = component;
+        }
       });
     }
 
     return (
-      <Image
+      <ImageBackground
         {...props}
-        ref={component => { this._image = component; }}
+        ref={component => {
+          this._image = component;
+        }}
         source={source}
       />
     );
